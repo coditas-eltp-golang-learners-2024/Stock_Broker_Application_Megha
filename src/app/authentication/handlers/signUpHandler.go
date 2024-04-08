@@ -23,13 +23,13 @@ func SignUpHandler(c *gin.Context) {
 		return
 	}
 
-	// Validate the fields
+	
 	if err := validate.Struct(customer); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Validation failed", "validation_errors": err.Error()})
 		return
 	}
 
-	// Call service to handle signup
+	
 	err := service.SignUp(&customer)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
