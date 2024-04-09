@@ -1,9 +1,7 @@
-// signUpModel.go
-
+// models/signUpModel.go
 package models
-
-import (
-    _ "github.com/go-playground/validator/v10" // Explicitly import the package to inform the linter
+import(
+    "stock_broker_application/utils"
 )
 
 type Customer struct {
@@ -13,4 +11,8 @@ type Customer struct {
     PhoneNumber   string `json:"phone_number" validate:"required,len=10"`
     PancardNumber string `json:"pancard_number" validate:"required,len=10"`
     Password      string `json:"password" validate:"required,min=8"`
+}
+
+func (c *Customer) Validate() error {
+    return utils.ValidateStruct(c)
 }
