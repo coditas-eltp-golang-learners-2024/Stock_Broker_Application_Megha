@@ -25,7 +25,5 @@ func (s *SignInService) SignIn(signInRequest models.Customer) error {
         return errors.New("customer does not exist")
     }
 
-    // Here you can implement additional logic for authentication if required
-
     return nil
 }
