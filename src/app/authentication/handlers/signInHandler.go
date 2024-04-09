@@ -1,5 +1,3 @@
-// handlers/signInHandler.go
-
 package handlers
 
 import (
@@ -33,14 +31,8 @@ func (h *SignInHandler) SignIn(c *gin.Context) {
         return
     }
 
-    // Convert SignInRequest to Customer
-    customer := models.Customer{
-        Email: signInRequest.Email,
-        Password: signInRequest.Password,
-    }
-
     // Call the SignIn method of the SignInService
-    if err := h.SignInService.SignIn(customer); err != nil {
+    if err := h.SignInService.SignIn(signInRequest); err != nil {
         c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
         return
     }

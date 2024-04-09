@@ -14,10 +14,16 @@ func init() {
 
 // ValidateSignUpRequest validates the sign-up request
 func ValidateSignUpRequest(signUpRequest models.Customer) error {
-    return Validator.Struct(signUpRequest)
+    if err := Validator.Struct(signUpRequest); err != nil {
+        return err
+    }
+    return nil
 }
 
 // ValidateSignInRequest validates the sign-in request
 func ValidateSignInRequest(signInRequest models.SignInRequest) error {
-    return Validator.Struct(signInRequest)
+    if err := Validator.Struct(signInRequest); err != nil {
+        return err
+    }
+    return nil
 }

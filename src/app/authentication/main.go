@@ -10,13 +10,11 @@ import (
 )
 
 func main() {
-    // Set up the database connection
     dbConn, err := db.SetupDatabase()
     if err != nil {
         log.Fatal(err)
     }
 
-    // Create instances of the repositories
     customerRepo := repo.NewCustomerRepository(dbConn)
 
     // Create instances of the services with the repositories injected
