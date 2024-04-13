@@ -1,24 +1,13 @@
 package models
-
-import (
-	"github.com/go-playground/validator/v10"
-)
-
-var validate *validator.Validate
-
-func init() {
-	validate = validator.New()
+// SignUpRequest represents the structure of user information.
+type SignUpRequest struct {
+	Name          string `gorm:"column:name" json:"name" validate:"required,alpha"`
+	Email         string `gorm:"column:email" json:"email" validate:"required,email"`
+	PhoneNumber   string `gorm:"column:phone_number" json:"phone_number" validate:"required,gte=0000000000,lte=9999999999"`
+	PancardNumber string `gorm:"column:pancard_number" json:"pancard_number" validate:"required,alphanum,len=10"`
+	Password      string `gorm:"column:password" json:"password" validate:"required,alphanum,min=8"`
 }
-
-type Customer struct {
-	Name          string `json:"name" validate:"required"`
-	Email         string `json:"email" validate:"required,email"`
-	PhoneNumber   string `json:"phone_number" validate:"required,len=10"`
-	PancardNumber string `json:"pancard_number" validate:"required,len=10"`
-	Password      string `json:"password" validate:"required,min=8"`
-}
-
-// Validate validates the Customer struct fields
-func (c *Customer) Validate() error {
-	return validate.Struct(c)
+// TableName sets the table name for SignUpRequest explicitly.
+func (SignUpRequest) TableName() string {
+	return "customers"
 }

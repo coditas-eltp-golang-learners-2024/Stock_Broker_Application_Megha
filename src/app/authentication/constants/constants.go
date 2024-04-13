@@ -1,6 +1,6 @@
 package constants
 
-const (
-	SignUpRoute = "/signUp"
-	SignInRoute = "/signIn"
+var(
+	SuccessSignIn ="Customer signed in succesfully"
+	SuccessSignUp =" Customer signed up successfully"
 )

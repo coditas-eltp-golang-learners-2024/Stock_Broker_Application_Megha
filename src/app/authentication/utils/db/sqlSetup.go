@@ -1,26 +1,45 @@
 package db
 
 import (
-	"database/sql"
 	"fmt"
-
-	_ "github.com/go-sql-driver/mysql"
+	"log"
+	"stock_broker_application/utils"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
-func SetupDatabase() (*sql.DB, error) {
-	connectionString := "root:password@tcp(127.0.0.1:3306)/application"
+var DB *gorm.DB
 
-	database, err := sql.Open("mysql", connectionString)
+// and pings the database to verify the connection.
+func InitDB() {
+	// Load database configuration
+	config, err := utils.LoadConfig()
 	if err != nil {
-		return nil, err
+		log.Fatalf("Error loading database configuration: %v", err)
 	}
 
-	err = database.Ping()
+	// Construct Data Source Name (DSN)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True",
+		config.Username, config.Password, config.Host, config.Port, config.DBName)
+
+	// Open a database connection
+	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		return nil, err
+		log.Fatalf("Error connecting to database: %v", err)
 	}
 
-	fmt.Println("Successfully connected to database!")
+	// Ping the database to verify the connection
+	sqlDB, err := DB.DB()
+	if err != nil {
+		log.Fatalf("Error getting DB instance: %v", err)
+	}
+	if err := sqlDB.Ping(); err != nil {
+		log.Fatalf("Error pinging database: %v", err)
+	}
 
-	return database, nil
+	log.Println("Connected to database")
+}
+
+func GetDB() *gorm.DB {
+	return DB
 }

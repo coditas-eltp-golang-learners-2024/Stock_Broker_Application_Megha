@@ -2,40 +2,41 @@ package handlers
 
 import (
     "net/http"
-    "github.com/gin-gonic/gin"
     "stock_broker_application/models"
     "stock_broker_application/service"
-    "stock_broker_application/utils"
+    "github.com/gin-gonic/gin"
+    "stock_broker_application/constants"
 )
 
-type SignInHandler struct {
-    SignInService *service.SignInService
-}
+// NewSignInHandler handles the sign-in request.
+// @Summary Sign in
+// @Description Sign in with email and password
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param email body string true "User email"
+// @Param password body string true "User password"
+// @Success 201 "Successful sign-in"
+// @Failure 400 "Invalid request payload"
+// @Failure 401 "Invalid credentials"
+// @Router /signIn [post]
+func NewSignInHandler(signInService *service.SignInService) gin.HandlerFunc {
+    return func(context *gin.Context) {
+        var signInRequest models.SignInRequest
 
-func NewSignInHandler(signInService *service.SignInService) *SignInHandler {
-    return &SignInHandler{
-        SignInService: signInService,
+        if err := context.BindJSON(&signInRequest); err != nil {
+            context.JSON(http.StatusBadRequest, gin.H{"error": constants.ErrAuthenticationFailed.Error()})
+            return
+        }
+
+        // Call the SignIn method of SignInService to validate the sign-in request
+        if err := signInService.SignIn(signInRequest); err != nil {
+            // If there's an error, return the error response
+            context.JSON(http.StatusUnauthorized, gin.H{"error": constants.ErrInvalidCredentials.Error()})
+            return
+        }
+
+        // If there's no error, return the success message
+        context.JSON(http.StatusCreated, gin.H{"message": constants.SuccessSignIn})
     }
-}
-
-func (h *SignInHandler) SignIn(c *gin.Context) {
-    var signInRequest models.SignInRequest
-    if err := c.BindJSON(&signInRequest); err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-        return
-    }
-
-    // Validate the sign-in request
-    if err := utils.ValidateSignInRequest(signInRequest); err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-        return
-    }
-
-    // Call the SignIn method of the SignInService
-    if err := h.SignInService.SignIn(signInRequest); err != nil {
-        c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
-        return
-    }
-
-    c.JSON(http.StatusOK, gin.H{"message": "User signed in successfully"})
 }

@@ -1,32 +1,38 @@
 package service
 
 import (
+	"stock_broker_application/constants"
     "stock_broker_application/models"
-    "errors"
+    "stock_broker_application/repo"
 )
 
-type UserRepository interface {
-    CheckCustomerExistsByEmailAndPassword(email, password string) (bool, error)
-}
-
+// SignInService handles sign-in logic
 type SignInService struct {
-    UserRepository UserRepository
+	UserRepository repo.CustomerRepository
 }
 
-func NewSignInService(userRepository UserRepository) *SignInService {
-    return &SignInService{
-        UserRepository: userRepository,
-    }
+// NewSignInService creates a new instance of SignInService
+func NewSignInService(userRepository repo.CustomerRepository) *SignInService {
+	return &SignInService{
+		UserRepository: userRepository,
+	}
 }
 
+// SignIn authenticates the user
 func (s *SignInService) SignIn(signInRequest models.SignInRequest) error {
-    exists, err := s.UserRepository.CheckCustomerExistsByEmailAndPassword(signInRequest.Email, signInRequest.Password)
+    customers, err := s.UserRepository.GetUserByEmail(signInRequest.Email)
+
     if err != nil {
+        // Handle the error if needed
         return err
     }
-    if !exists {
-        return errors.New("customer does not exist")
-    }
 
+    if customers == nil {
+        return constants.ErrCustomerNotFound
+    }
+    if customers.Password != signInRequest.Password {
+        return constants.ErrInvalidCredentials
+    }
+    // Authentication successful
     return nil
 }

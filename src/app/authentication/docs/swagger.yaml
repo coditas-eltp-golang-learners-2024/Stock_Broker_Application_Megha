@@ -1,0 +1,87 @@
+definitions:
+  models.SignUpRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      pancard_number:
+        type: string
+      password:
+        minLength: 8
+        type: string
+      phone_number:
+        maxLength: 9999999999
+        minLength: 0
+        type: string
+    required:
+    - email
+    - name
+    - pancard_number
+    - password
+    - phone_number
+    type: object
+info:
+  contact: {}
+paths:
+  /signIn:
+    post:
+      consumes:
+      - application/json
+      description: Sign in with email and password
+      parameters:
+      - description: User email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: User password
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful sign-in
+        "400":
+          description: Invalid request payload
+        "401":
+          description: Invalid credentials
+      summary: Sign in
+      tags:
+      - Authentication
+  /signUp:
+    post:
+      consumes:
+      - application/json
+      description: Sign up with user details
+      parameters:
+      - description: Sign-up request payload
+        in: body
+        name: signUpRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.SignUpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful sign-up
+          schema:
+            $ref: '#/definitions/models.SignUpRequest'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Sign up
+      tags:
+      - Authentication
+swagger: "2.0"

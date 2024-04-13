@@ -1,29 +1,39 @@
 package utils
 
 import (
-    "github.com/go-playground/validator/v10"
     "stock_broker_application/models"
+    "github.com/go-playground/validator/v10"
+    "stock_broker_application/constants"
 )
 
-// Validator holds the validator instance
-var Validator *validator.Validate
-
-func init() {
-    Validator = validator.New()
-}
-
-// ValidateSignUpRequest validates the sign-up request
-func ValidateSignUpRequest(signUpRequest models.Customer) error {
-    if err := Validator.Struct(signUpRequest); err != nil {
-        return err
+func ValidateSignUpRequest(req models.SignUpRequest) error {
+    // Create a new validator instance
+    validate := validator.New()
+    
+    // Validate the name field
+    if err := validate.Var(req.Name, "required,isAlpha"); err != nil {
+        return constants.ErrInvalidName
     }
-    return nil
-}
 
-// ValidateSignInRequest validates the sign-in request
-func ValidateSignInRequest(signInRequest models.SignInRequest) error {
-    if err := Validator.Struct(signInRequest); err != nil {
-        return err
+    // Validate the email field
+    if err := validate.Var(req.Email, "required,email"); err != nil {
+        return constants.ErrInvalidEmail
     }
+
+    // Validate the phone number field
+    if err := validate.Var(req.PhoneNumber, "required,len=10"); err != nil {
+        return constants.ErrInvalidPhoneNumber
+    }
+
+    // Validate the PAN card number field
+    if err := validate.Var(req.PancardNumber, "required,isAlphaNumeric"); err != nil {
+        return constants.ErrInvalidPancardNumber
+    }
+
+    // Validate the password field
+    if err := validate.Var(req.Password, "required"); err != nil {
+        return constants.ErrMissingPassword
+    }
+
     return nil
 }
