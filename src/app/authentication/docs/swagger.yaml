@@ -1,18 +1,34 @@
+basePath: /
 definitions:
+  models.SignInRequest:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 8
+        type: string
+    required:
+    - email
+    - password
+    type: object
   models.SignUpRequest:
     properties:
       email:
         type: string
       name:
+        example: Megha Pawar
+        maxLength: 50
+        minLength: 3
         type: string
       pancard_number:
         type: string
       password:
+        example: password
         minLength: 8
         type: string
       phone_number:
-        maxLength: 9999999999
-        minLength: 0
+        maxLength: 10
+        minLength: 10
         type: string
     required:
     - email
@@ -21,36 +37,40 @@ definitions:
     - password
     - phone_number
     type: object
+host: localhost:8080
 info:
   contact: {}
+  description: api for Stock Broker using gin and gorm
+  title: Stock Broker Application
+  version: "1.0"
 paths:
   /signIn:
     post:
       consumes:
       - application/json
-      description: Sign in with email and password
+      description: Sign in with user credentials
       parameters:
-      - description: User email
+      - description: Sign-in request payload
         in: body
-        name: email
+        name: signInRequest
         required: true
         schema:
-          type: string
-      - description: User password
-        in: body
-        name: password
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/models.SignInRequest'
       produces:
       - application/json
       responses:
         "201":
-          description: Successful sign-in
+          description: SuccessSignIn
+          schema:
+            type: string
         "400":
-          description: Invalid request payload
+          description: Authentication failed
+          schema:
+            type: string
         "401":
           description: Invalid credentials
+          schema:
+            type: string
       summary: Sign in
       tags:
       - Authentication
@@ -70,15 +90,15 @@ paths:
       - application/json
       responses:
         "200":
-          description: Successful sign-up
+          description: SuccessSignUp
           schema:
-            $ref: '#/definitions/models.SignUpRequest'
+            type: string
         "400":
-          description: Invalid request payload
+          description: Bad Request
           schema:
             type: string
         "500":
-          description: Internal server error
+          description: Internal Server Error
           schema:
             type: string
       summary: Sign up

@@ -17,7 +17,7 @@ const docTemplate = `{
     "paths": {
         "/signIn": {
             "post": {
-                "description": "Sign in with email and password",
+                "description": "Sign in with user credentials",
                 "consumes": [
                     "application/json"
                 ],
@@ -30,33 +30,33 @@ const docTemplate = `{
                 "summary": "Sign in",
                 "parameters": [
                     {
-                        "description": "User email",
-                        "name": "email",
+                        "description": "Sign-in request payload",
+                        "name": "signInRequest",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "User password",
-                        "name": "password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.SignInRequest"
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "Successful sign-in"
+                        "description": "SuccessSignIn",
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     "400": {
-                        "description": "Invalid request payload"
+                        "description": "Authentication failed",
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     "401": {
-                        "description": "Invalid credentials"
+                        "description": "Invalid credentials",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             }
@@ -87,19 +87,19 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful sign-up",
+                        "description": "SuccessSignUp",
                         "schema": {
-                            "$ref": "#/definitions/models.SignUpRequest"
+                            "type": "string"
                         }
                     },
                     "400": {
-                        "description": "Invalid request payload",
+                        "description": "Bad Request",
                         "schema": {
                             "type": "string"
                         }
                     },
                     "500": {
-                        "description": "Internal server error",
+                        "description": "Internal Server Error",
                         "schema": {
                             "type": "string"
                         }
@@ -109,6 +109,22 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.SignInRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 8
+                }
+            }
+        },
         "models.SignUpRequest": {
             "type": "object",
             "required": [
@@ -123,19 +139,23 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 3,
+                    "example": "Megha Pawar"
                 },
                 "pancard_number": {
                     "type": "string"
                 },
                 "password": {
                     "type": "string",
-                    "minLength": 8
+                    "minLength": 8,
+                    "example": "password"
                 },
                 "phone_number": {
                     "type": "string",
-                    "maxLength": 9999999999,
-                    "minLength": 0
+                    "maxLength": 10,
+                    "minLength": 10
                 }
             }
         }
@@ -144,12 +164,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
-	Host:             "",
-	BasePath:         "",
+	Version:          "1.0",
+	Host:             "localhost:8080",
+	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "Stock Broker Application",
+	Description:      "api for Stock Broker using gin and gorm",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

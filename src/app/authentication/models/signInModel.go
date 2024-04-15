@@ -1,4 +1,3 @@
-
 package models
 
 // SignInCredentials represents the structure of user sign-in credentials.
