@@ -1,4 +1,5 @@
 package utils
+
 import (
 	"errors"
 	"github.com/go-playground/validator/v10"

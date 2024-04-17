@@ -1,4 +1,5 @@
 package models
+
 type DatabaseConfig struct {
 	// Driver   string `yaml:"driver"`
 	Host     string `yaml:"host"`
