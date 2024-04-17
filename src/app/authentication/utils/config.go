@@ -1,9 +1,7 @@
 package utils
-
 import (
     "log"
     "stock_broker_application/models"
-
     "github.com/spf13/viper"
 )
 
@@ -16,7 +14,6 @@ func LoadConfig() (models.DatabaseConfig, error) {
         log.Fatalf("Error reading config file: %s", err)
         return models.DatabaseConfig{}, err
     }
-
     // Unmarshal the configuration into a struct
     var config models.DatabaseConfig
     if err := viper.UnmarshalKey("database", &config); err != nil {

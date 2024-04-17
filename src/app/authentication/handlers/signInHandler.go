@@ -1,5 +1,4 @@
 package handlers
-
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -27,14 +26,12 @@ func NewSignInHandler(signInService *service.SignInService) gin.HandlerFunc {
 			context.JSON(http.StatusBadRequest, gin.H{"error": constants.ErrAuthenticationFailed.Error()})
 			return
 		}
-
 		// Call the SignIn method of SignInService to validate the sign-in request
 		if err := signInService.SignIn(signInRequest); err != nil {
 			// If there's an error, return the error response
 			context.JSON(http.StatusUnauthorized, gin.H{"error": constants.ErrInvalidCredentials.Error()})
 			return
 		}
-
 		// If there's no error, return the success message
 		context.JSON(http.StatusCreated, gin.H{"message": constants.SuccessSignIn})
 	}

@@ -1,7 +1,5 @@
 package constants
-
 import "errors"
-
 var (
 	ErrDatabaseInsert       = errors.New("failed to insert into database")
 	ErrCustomerNotFound     = errors.New("customer not found")

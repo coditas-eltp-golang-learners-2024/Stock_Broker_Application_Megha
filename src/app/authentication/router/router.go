@@ -1,6 +1,5 @@
 // Package router provides functions to set up and configure the application's HTTP router.
 package router
-
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/files"

@@ -1,5 +1,4 @@
 package repo
-
 import (
 	"gorm.io/gorm"
 	"stock_broker_application/constants"

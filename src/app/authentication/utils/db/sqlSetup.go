@@ -1,5 +1,4 @@
 package db
-
 import (
 	"fmt"
 	"gorm.io/driver/mysql"
