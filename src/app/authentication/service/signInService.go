@@ -19,11 +19,11 @@ func NewSignInService(userRepository repo.CustomerRepository) *SignInService {
 }
 
 // SignIn authenticates the user
-func (s *SignInService) SignIn(signInRequest models.SignInRequest) error {
-	customers, err := s.UserRepository.GetUserByEmail(signInRequest.Email)
+func (service *SignInService) SignIn(signInRequest models.SignInRequest) error {
+	customers, err := service.UserRepository.GetUserByEmail(signInRequest.Email)
 
+	// Handle the error if needed
 	if err != nil {
-		// Handle the error if needed
 		return err
 	}
 
