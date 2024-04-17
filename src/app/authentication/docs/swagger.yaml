@@ -1,0 +1,107 @@
+basePath: /
+definitions:
+  models.SignInRequest:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 8
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  models.SignUpRequest:
+    properties:
+      email:
+        type: string
+      name:
+        example: Megha Pawar
+        maxLength: 50
+        minLength: 3
+        type: string
+      pancard_number:
+        type: string
+      password:
+        example: password
+        minLength: 8
+        type: string
+      phone_number:
+        maxLength: 10
+        minLength: 10
+        type: string
+    required:
+    - email
+    - name
+    - pancard_number
+    - password
+    - phone_number
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: api for Stock Broker using gin and gorm
+  title: Stock Broker Application
+  version: "1.0"
+paths:
+  /signIn:
+    post:
+      consumes:
+      - application/json
+      description: Sign in with user credentials
+      parameters:
+      - description: Sign-in request payload
+        in: body
+        name: signInRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.SignInRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: SuccessSignIn
+          schema:
+            type: string
+        "400":
+          description: Authentication failed
+          schema:
+            type: string
+        "401":
+          description: Invalid credentials
+          schema:
+            type: string
+      summary: Sign in
+      tags:
+      - Authentication
+  /signUp:
+    post:
+      consumes:
+      - application/json
+      description: Sign up with user details
+      parameters:
+      - description: Sign-up request payload
+        in: body
+        name: signUpRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.SignUpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: SuccessSignUp
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Sign up
+      tags:
+      - Authentication
+swagger: "2.0"

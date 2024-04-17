@@ -1,7 +1,6 @@
-// constants.go
-
 package constants
 
-const (
-    SignUpRoute = "/signUp"
+var (
+	SuccessSignIn = "Customer signed in succesfully"
+	SuccessSignUp = "Customer signed up successfully"
 )

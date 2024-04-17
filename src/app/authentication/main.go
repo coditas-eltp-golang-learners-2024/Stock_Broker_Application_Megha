@@ -1,21 +1,22 @@
-
 package main
 
 import (
 	"log"
-	"net/http"
 	"stock_broker_application/router"
 	"stock_broker_application/utils/db"
 )
 
+// @title Stock Broker Application
+// @description api for Stock Broker using gin and gorm
+// @version 1.0
+// @BasePath /
+// @host localhost:8080
 func main() {
-    _, err := db.SetupDatabase()
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    r:=router.SetupRouter()
-
-    log.Println("Server is running on port 8080")
-    log.Fatal(http.ListenAndServe(":8080", r))
+	database, err := db.InitDB()
+	if err != nil {
+		log.Fatalf("Error initializing database:%v", err)
+	}
+	log.Println("Database connection is initialized, Application starting...")
+	router := router.SetupRouter(database)
+	router.Run(":8080")
 }

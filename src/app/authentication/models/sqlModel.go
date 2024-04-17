@@ -1,10 +1,10 @@
 package models
 
 type DatabaseConfig struct {
-    Driver   string `json:"driver"`
-    Host     string `json:"host"`
-    Port     int    `json:"port"`
-    Username string `json:"username"`
-    Password string `json:"password"`
-    DBName   string `json:"dbname"`
+	// Driver   string `yaml:"driver"`
+	Host     string `yaml:"host"`
+	Port     string `yaml:"port"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
+	DBName   string `yaml:"dbname"`
 }
