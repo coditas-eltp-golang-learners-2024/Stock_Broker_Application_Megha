@@ -22,10 +22,13 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	userRepository := repo.NewCustomerRepository(db)
 	userService := service.NewSignUpService(userRepository)
 	userAuthService := service.NewSignInService(userRepository)
+	otpService := service.NewOTPService(userRepository)
 
 	// Register HTTP routes for sign-up and sign-in endpoints
 	router.POST(constants.SignUpRoute, handlers.NewSignUpHandler(userService))
 	router.POST(constants.SignInRoute, handlers.NewSignInHandler(userAuthService))
+	// router.POST(constants.OTPValidationRoute, handlers.NewValidateOTPHandler(otpService))
+	router.POST("/validateOTP", handlers.NewValidateOTPHandler(otpService))
 
 	return router
 }

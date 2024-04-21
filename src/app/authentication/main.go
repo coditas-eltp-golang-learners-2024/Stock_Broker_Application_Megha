@@ -12,9 +12,9 @@ import (
 // @BasePath /
 // @host localhost:8080
 func main() {
-	database,err:=db.InitDB()
-	if err!=nil{
-		log.Fatalf("Error initializing database:%v",err)
+	database, err := db.InitDB()
+	if err != nil {
+		log.Fatalf("Error initializing database:%v", err)
 	}
 	log.Println("Database connection is initialized, Application starting...")
 	router := router.SetupRouter(database)

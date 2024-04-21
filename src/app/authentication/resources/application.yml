@@ -1,7 +1,6 @@
 database:
-  driver: mysql
-  host: localhost
+  host: eltpdatabase.criiey6s64bu.eu-north-1.rds.amazonaws.com
   port: "3306"
-  username: root
-  password: password
-  dbname: application
+  username: admin
+  password: admincoditas
+  dbname: eltp-database

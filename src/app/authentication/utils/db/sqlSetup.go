@@ -38,8 +38,3 @@ func InitDB() (*gorm.DB, error) {
 	log.Println("Connected to database")
 	return db, nil
 }
-
-// GetDB returns the database connection.
-func GetDB(db *gorm.DB) *gorm.DB {
-	return db
-}
